@@ -16,12 +16,11 @@ device_file = device_folder + '/w1_slave'
 
 # maintains one json file per day to avoid data bloating
 # if unable to sync to database
-def update_file_name():
+def update_file_name(file_data):
     global date
     date = datetime.datetime.utcnow().strptime("%d:%m:%Y")
     global Log_File_name
     Log_File_name = ".data_logs/heart_rate_data.json" + date
-    global file_data
     file_data.clear()
     file_data = {
       "readings" : []
@@ -53,16 +52,15 @@ def read_temp():
     if equals_pos != -1:
         temp_string = lines[1][equals_pos+2:]
         temp_c = float(temp_string) / 1000.0
-        temp_f = temp_c * 9.0 / 5.0 + 32.0
+        temp_f = temp_c * 1.8 + 32.0
         return temp_c, temp_f
 
-def detect():
-    global file_data
+def detect(file_data):
     while True:
         cel, far = read_temp()
         record_time = datetime.datetime.utcnow()
         if record_time.strptime("%d:%m:%Y") != date:
-            update_file_name()
+            update_file_name(file_data)
         file_data["readings"].append(
             {
                 "UTCDatetime": record_time,
