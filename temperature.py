@@ -18,7 +18,7 @@ device_file = device_folder + '/w1_slave'
 # if unable to sync to database
 def update_file_name(file_data):
     global date
-    date = datetime.datetime.utcnow().strptime("%d:%m:%Y")
+    date = datetime.datetime.utcnow().strftime("%d:%m:%Y")
     global Log_File_name
     Log_File_name = ".data_logs/heart_rate_data.json" + date
     file_data.clear()
@@ -59,11 +59,11 @@ def detect(file_data):
     while True:
         cel, far = read_temp()
         record_time = datetime.datetime.utcnow()
-        if record_time.strptime("%d:%m:%Y") != date:
+        if record_time.strftime("%d:%m:%Y") != date:
             update_file_name(file_data)
         file_data["readings"].append(
             {
-                "UTCDatetime": record_time,
+                "UTCDatetime": record_time.strftime("%d-%m-%Y %H:%M:%S"),
                 "fahrenheit": far,
                 "celsius": cel
             }
@@ -72,16 +72,21 @@ def detect(file_data):
             json.dump(file_data, file, indent=4)
         time.sleep(30)
 
-# set file to save values to
-date = datetime.datetime.utcnow().strptime("%d:%m:%Y")
-Log_File_name = f".data_logs/heart_rate_data.json" + date
-# set up logging file
-with open(Log_File_name, 'r+')as file:
-    file_data = json.load(file)
-    if "readings" not in file_data:
+
+date = datetime.datetime.utcnow().strftime("%d:%m:%Y")
+Log_File_name = "data_logs/temperature_data" + date + ".json"
+
+file = open(Log_File_name,'a+')
+file.close()
+
+if os.stat(Log_File_name).st_size==0:
+    with open(Log_File_name, 'w') as file:
         file_data = {
-            "readings" : []
+                "readings" : []
         }
         json.dump(file_data, file, indent=4)
+else:
+    with open(Log_File_name, 'r') as file:
+        file_data = json.load(file)
 
-detect()
+detect(file_data)
