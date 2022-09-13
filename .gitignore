@@ -1,2 +1,2 @@
 data_logs/*.json
-__pycache__
+__pycache__/
