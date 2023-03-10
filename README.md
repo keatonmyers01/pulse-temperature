@@ -31,6 +31,22 @@ Use NPM install to install the required packages. Add database access informatio
 
 Create two tables in the database that the API is writting to with the following definitions:
 
+CREATE TABLE `heart_rate` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `bpm` float NOT NULL,
+  `time` timestamp NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) AUTO_INCREMENT=1
+
+CREATE TABLE `temperature` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `temperature` float NOT NULL,
+  `time` timestamp NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) AUTO_INCREMENT=1
+
 ### Displaying Data
 
 Feel free to use whatever methods to display the data, I personally used Graphana to graph the data over time.
