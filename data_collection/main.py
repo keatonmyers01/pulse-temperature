@@ -18,7 +18,7 @@ import json
 
 # sensor setup
 adc = ADC(Pin(26))
-ds_pin = machine.Pin(16)
+ds_pin = machine.Pin(4)
 ds_sensor = ds18x20.DS18X20(onewire.OneWire(ds_pin))
 roms = ds_sensor.scan()
 led = Pin("LED", machine.Pin.OUT)
@@ -35,8 +35,8 @@ TOTAL_BEATS = 60
 tail_length = 5
 max_increase = 1.3
 max_decrease = 0.75
-upper_threshold_modifier = 0.15
-lower_threshold_modifier = 0.15
+upper_threshold_modifier = 0.10
+lower_threshold_modifier = 0.12
 record_threshold = 30
 outlier_avoidence = 3
 sort_point = 100
@@ -151,7 +151,7 @@ def detect(detect_values, beat_storage):
     count a new beat if the value detected is over the beat threshold
     and if the beat toggle is false
     """
-    if reading > detect_values["threshold_on"] and reading < detect_values["threshold_on"] + 150 and detect_values["beat"] == False:     
+    if reading > detect_values["threshold_on"] and reading < detect_values["threshold_on"] + 150 and detect_values["beat"] == False:
         detect_values["beat_counter"] += 1
         detect_values["beat"] = True
         detect_values["last_beat_time"] = time.ticks_ms()

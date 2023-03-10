@@ -2,14 +2,10 @@ const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
 var fs = require('fs');
+const config =  require("./config.json")
 
 //fill in your db information 
-const db = mysql.createConnection({
-    host: '',
-    user: '',
-    password: '',
-    database: ''
-});
+const db = mysql.createConnection(config.database);
 
 db.connect((err) => {
     if(err){
@@ -100,7 +96,7 @@ app.post('/new_log', (req, res) => {
         return res.sendStatus(200);
     };
 
-    fs.writeFile( "../../logs/" + req.body["name"], req.body["content"], (err) => {
+    fs.writeFile(config.log_location + req.body["name"], req.body["content"], (err) => {
         if (err) throw err;
     });
 
