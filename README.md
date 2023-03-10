@@ -1,9 +1,12 @@
 # Wearable Biometrics Detection and Upload Project
 
-A Biometric sensor for pulse and temperature designed in MicroPython on the Raspberry Pi Pico W. Data is read using a ds18b20 temperature sensor and a World Famous Electronics pulse sensor. Data is synced to the cloud every five minutes if an internet connection is found. Data is lost if power is lost.
+A Biometric sensor for pulse and temperature designed in MicroPython on the Raspberry Pi Pico W. Data is read using a ds18b20 temperature sensor and a World Famous Electronics pulse sensor. Data is synced to the cloud every five minutes if an internet connection is found. 
+
+I built a prototype for this as a hackathon project. The rest of the team decided to stop working on the project I wanted to continue development so I overhauled the code, added the pulse sensor, API connection, and converted it to work on a Pico W. The orrigional idea came about because of heat sensitivity issues I have that made monitoring temperature intresting to me. While this idea could easily be applied to existing smart watches, most do not track skin temperature or if they do only infrequently at night.
 
 ## Known Problems
 
+- Data is lost if power is lost, no way around this as the pi uses the offset of the time that the data is collected from the time it is sent to determine the time of day the data was collected. Since the board doesn't have a cmos this value is reset every time it is restarted causing timing to be off.
 - Internet connection can be an issue as the Pico occasionally gets stuck thinking it has a connection when it doesn't. The code is set to restart the machine which fixes the problem, however in the state that it is downloaded in for it to automatically run after this main.py needs to be renamed to boot.py. Ideally this could be set to use bluetooth to transmit data to a phone where a corresponding app could trasmit the data to an api but I have an Iphone with no mac to program it with or a developer key to use in development.
 - HTTP requests take time and intrupt the beats from counting. This causes an very short inturupt in the data collection as I need to regather historical data. Ideally the HTTP request would be sent in a seperate thread but the urequests library does not apear thread safe.
 - Pulse data has accuracy problems, either the sensor (I ran the data and ground backwards and might have damaged it) or my algorithmn could be the source of the problem. Likely the algorithmn could be improved with some more extensive analysis of the output.
