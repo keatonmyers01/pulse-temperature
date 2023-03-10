@@ -4,7 +4,7 @@ A Biometric sensor for pulse and temperature designed in MicroPython on the Rasp
 
 ## Known Problems
 
-- Internet connection can be an issue as the Pico occasionally gets stuck thinking it has a connection when it doesn't. The code is set to restart the machine which fixes the problem, however in the state that it is downloaded in for it to automatically run after this main.py needs to be renamed to boot.py.
+- Internet connection can be an issue as the Pico occasionally gets stuck thinking it has a connection when it doesn't. The code is set to restart the machine which fixes the problem, however in the state that it is downloaded in for it to automatically run after this main.py needs to be renamed to boot.py. Ideally this could be set to use bluetooth to transmit data to a phone where a corresponding app could trasmit the data to an api but I have an Iphone with no mac to program it with or a developer key to use in development.
 - HTTP requests take time and intrupt the beats from counting. This causes an very short inturupt in the data collection as I need to regather historical data. Ideally the HTTP request would be sent in a seperate thread but the urequests library does not apear thread safe.
 - Pulse data has accuracy problems, either the sensor (I ran the data and ground backwards and might have damaged it) or my algorithmn could be the source of the problem. Likely the algorithmn could be improved with some more extensive analysis of the output.
 
